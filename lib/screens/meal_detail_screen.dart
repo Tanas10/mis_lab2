@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/meal_detiil.dart';
 import '../services/api_service.dart';
-
+import 'favorites_service.dart';
 
 class MealDetailScreen extends StatefulWidget {
   final String mealId;
@@ -15,6 +15,8 @@ class MealDetailScreen extends StatefulWidget {
 class _MealDetailScreenState extends State<MealDetailScreen> {
   MealDetail? meal;
   bool isLoading = true;
+  final FavoritesService favSvc = FavoritesService();
+  bool isFav = false;
 
   @override
   void initState() {
@@ -26,7 +28,16 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     final data = await ApiService().getMealDetail(widget.mealId);
     setState(() {
       meal = data;
+      isFav = favSvc.isFavorite(meal!.idMeal);
       isLoading = false;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (meal == null) return;
+    await favSvc.toggleFavorite(meal!);
+    setState(() {
+      isFav = favSvc.isFavorite(meal!.idMeal);
     });
   }
 
@@ -41,6 +52,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     }
     return ingredients;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +93,28 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
               child: Text("• $text"),
             )),
             SizedBox(height: 20),
-            if (meal!.strYoutube != null && meal!.strYoutube!.isNotEmpty)
-              ElevatedButton(
-                onPressed: () {
-                },
-                child: Text("Watch on YouTube"),
-              ),
+
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (meal!.strYoutube != null && meal!.strYoutube!.isNotEmpty)
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.video_library),
+                    label: Text("Watch on YouTube"),
+                    onPressed: () => {},
+                  ),
+                SizedBox(width: 16),
+                ElevatedButton.icon(
+                  icon: Icon(isFav ? Icons.favorite : Icons.favorite_border),
+                  label: Text(isFav ? "Favorited" : "Favorite"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isFav ? Colors.green : Colors.grey,
+                  ),
+                  onPressed: _toggleFavorite,
+                ),
+              ],
+            ),
           ],
         ),
       ),

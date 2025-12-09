@@ -44,11 +44,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         title: Text("Meal Categories"),
         actions: [
           IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () => Navigator.pushNamed(context, '/favorites'),
+          ),
+          IconButton(
             icon: Icon(Icons.shuffle),
-            onPressed: () {
-              Navigator.pushNamed(context, '/randomMeal');
-            },
-          )
+            onPressed: () => Navigator.pushNamed(context, '/randomMeal'),
+          ),
         ],
       ),
       body: isLoading

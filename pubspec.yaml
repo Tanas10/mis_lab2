@@ -36,7 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^0.13.6
   cached_network_image: ^3.2.3
-
+  shared_preferences: ^2.1.1
+  firebase_core: ^3.8.1 # https://pub.dev/packages/firebase_core
 dev_dependencies:
   flutter_test:
     sdk: flutter

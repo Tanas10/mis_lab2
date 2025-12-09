@@ -51,4 +51,18 @@ class MealDetail {
       measures: measures,
     );
   }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> out = {
+      'idMeal': idMeal,
+      'strMeal': strMeal,
+      'strMealThumb': strMealThumb,
+      'strInstructions': strInstructions,
+      'strYoutube': strYoutube ?? '',
+    };
+    for (int i = 1; i <= 20; i++) {
+      out['strIngredient$i'] = ingredients[i] ?? '';
+      out['strMeasure$i'] = measures[i] ?? '';
+    }
+    return out;
+  }
 }

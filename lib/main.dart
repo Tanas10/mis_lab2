@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:lab2/screens/favorites_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/meals_screen.dart';
 import 'screens/meal_detail_screen.dart';
 import 'screens/random_meal_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+
+    options: DefaultFirebaseOptions.currentPlatform,
+
+  );
   runApp(MealApp());
 }
 
@@ -24,7 +34,9 @@ class MealApp extends StatelessWidget {
 
       routes: {
         '/randomMeal': (context) => RandomMealScreen(),
+        '/favorites': (context) => FavoritesScreen(),
       },
+
 
 
       onGenerateRoute: (settings) {
